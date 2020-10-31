@@ -6,7 +6,8 @@ import json from './contacts.json';
 
 class App extends React.Component {
   state = {
-    contacts: json.slice(0, 5)
+    contacts: json.slice(0, 5),
+    sortBy: null
   }
 
   addHandler = () => {
@@ -18,13 +19,27 @@ class App extends React.Component {
   }
 
   render() {
+    let contacts = [...this.state.contacts]; // make a copy (prevent mutating if .sort)
+    
+    // sort by name
+    if (this.state.sortby === 'name') {
+      contacts.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
+    // sort by popularity
+    if (this.state.sortby === 'popularity') {
+      contacts.sort((a, b) => a.popularity - b.popularity)
+    }
+    
     return (
       <div className="App">
         <h1>IronContacts</h1>
   
         <p>
-            <button onClick={e => this.addHandler()}>Add new contact</button>
-          </p>
+          <button onClick={e => this.addHandler()}>Add new contact</button>
+          <button onClick={e => this.setState({sortby: 'name'})}>Sort by name</button>
+          <button onClick={e => this.setState({sortby: 'popularity'})}>Sort by popularity</button>
+        </p>
   
         <table>
           <thead>
@@ -35,7 +50,7 @@ class App extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.contacts.map((contact, index) => {
+            {contacts.map((contact, index) => {
               return (
                 <tr key={index}>
                   <td>
