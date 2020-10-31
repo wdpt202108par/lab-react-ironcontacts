@@ -18,6 +18,18 @@ class App extends React.Component {
     })
   }
 
+  deleteHandler = (name) => {
+    const contactsCopy = [...this.state.contacts]; // copy
+
+    // Find the index of the matching contact => splice it!
+    const contactIndexToRemove = contactsCopy.findIndex(el => el.name === name);
+    contactsCopy.splice(contactIndexToRemove, 1);
+
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
   render() {
     let contacts = [...this.state.contacts]; // make a copy (prevent mutating if .sort)
     
@@ -47,6 +59,7 @@ class App extends React.Component {
               <th>Picture</th>
               <th>Name</th>
               <th>Popularity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +71,11 @@ class App extends React.Component {
                   </td>
                   <td>{contact.name}</td>
                   <td>{contact.popularity}</td>
+                  <td>
+                    <button onClick={e => {
+                      this.deleteHandler(contact.name)
+                    }}>Delete</button>
+                  </td>
                 </tr>
               )
             })}
