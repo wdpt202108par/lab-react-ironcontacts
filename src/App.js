@@ -55,7 +55,7 @@ function App() {
                   <tr>
                     <td><img src={celebrity.pictureUrl} /></td>
                     <td>{celebrity.name}</td>
-                    <td>{celebrity.popularity}</td>
+                    <td>{Number.parseFloat(celebrity.popularity).toFixed(2)}</td>
                 </tr>
                 )
               })}
