@@ -1,24 +1,75 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import contacts from "./contacts.json";
+
+const Contact = (props) => {
+  return (
+    <>
+      <td><img className="contactPicture" src={props.pictureUrl} alt={props.name}image/></td>
+      <td>{props.name}</td>
+      <td>{Math.round((props.popularity)*100)/100}</td>
+    </>
+  );
+};
+
+class ContactsTab extends React.Component {
+
+  // ITERATION 1 :  Display the first 5 contacts
+  state = {
+    contacts: contacts.slice(0, 5)
+  }
+
+  // ITERATION 2 : Add New Random contacts
+  //Create a function to add a new random contact
+  addContactHandler = () => {
+    //random index
+    let randomIndex = Math.floor(Math.random() * contacts.length);
+
+    //Copy of the array "this.state.contacts" to not mutating the state
+    const contactsCopy = [...this.state.contacts, (contacts[randomIndex])];
+
+    //Update the state 
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
+  render () {
+    return (
+      <>
+        {/* Iteration 2 : Button to add random contact */}
+        <button onClick={this.addContactHandler}>Add Random Contact</button>
+        
+        {/* Iteration 1 : The Contact table */}
+        <table>
+          <thead>
+            <tr>
+              <th colSpan="1">Picture</th>
+              <th colSpan="1">Name</th>
+              <th colSpan="1">Popularity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.contacts.map(contact => (
+              <tr key={contact.id}>
+                <Contact name={contact.name} 
+                  pictureUrl={contact.pictureUrl} 
+                  popularity={contact.popularity} 
+                />
+              </tr>                      
+            ))}
+            </tbody>
+        </table>
+      </>
+    ) 
+  }
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>IronContacts</h1>
+      <ContactsTab />
     </div>
   );
 }

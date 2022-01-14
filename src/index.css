@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Contacts Table */
+
+.App table {
+  margin: auto;
+  padding: 20px;
+}
+
+.contactPicture {
+  width: 50px;
+}
+
+button {
+  margin: 0 2px;
+}
