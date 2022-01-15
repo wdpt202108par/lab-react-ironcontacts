@@ -34,11 +34,33 @@ class ContactsTab extends React.Component {
     })
   }
 
+
+  sortByName = () => {
+    const sortedByName = this.state.contacts.sort(function  (a, b) {
+      return a.name.localeCompare(b.name)
+    })
+    this.setState({
+      contacts: sortedByName
+    })
+  }
+
+  sortByPopularity = () => {
+    const sortedByPopularity = this.state.contacts.sort(function  (a, b) {
+      return b.popularity - a.popularity
+    })
+    this.setState({
+      contacts: sortedByPopularity
+    })
+  }
+
+
   render () {
     return (
       <>
         {/* Iteration 2 : Button to add random contact */}
         <button onClick={this.addContactHandler}>Add Random Contact</button>
+        <button onClick={this.sortByName}>Sort By Name</button>
+        <button onClick={this.sortByPopularity}>Sort By Popularity</button>
         
         {/* Iteration 1 : The Contact table */}
         <table>
@@ -65,6 +87,11 @@ class ContactsTab extends React.Component {
   }
 }
 
+
+
+
+
+        
 function App() {
   return (
     <div className="App">
