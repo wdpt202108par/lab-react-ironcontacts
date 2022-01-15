@@ -11,7 +11,6 @@ class Random extends React.Component {
 
   addNewRandom = (event) => {
     const random = contacts[Math.floor(Math.random() * contacts.length)];
-    console.log('random: ', random)
     this.setState ({
       contacts : [...this.state.contacts, {...random}]
     })
@@ -40,6 +39,17 @@ class Random extends React.Component {
     })
   }
 
+  deleteContact = (contactId) => {
+    let contactsCopy = [...this.state.contacts]
+    let index = contactsCopy.findIndex(item => item.id === contactId)
+    contactsCopy.splice(index, 1)
+    this.setState(
+      {
+        contacts: contactsCopy
+      }
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -62,6 +72,7 @@ class Random extends React.Component {
                   <td><img src={contact.pictureUrl} alt="contactpic"></img></td>
                   <td>{contact.name}</td>
                   <td>{contact.popularity.toFixed(2)}</td>
+                  <td><button onClick={ (e) => this.deleteContact(contact.id)}>Delete</button></td>
                 </tr>
               )
             })}
