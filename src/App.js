@@ -1,68 +1,125 @@
 import logo from './logo.svg';
 import './App.css';
+import json from './contacts.json'
 
 import contacts from "./contacts.json";
+import { createForbiddenExclusivityError } from 'mocha/lib/errors';
+import React from 'react';
 
-const celebrities = [
-  {
-    name: "Idris Elba",
-    pictureUrl: "https://image.tmdb.org/t/p/w500/d9NkfCwczP0TjgrjpF94jF67SK8.jpg",
-    popularity: 11.622713,
-    id: "11731993-0604-4bee-80d5-67ad845d0a38"
-  },
-  {
-    name: "Johnny Depp",
-    pictureUrl: "https://image.tmdb.org/t/p/w500/kbWValANhZI8rbWZXximXuMN4UN.jpg",
-    popularity: 15.656534,
-    id: "7dad00f7-3949-477d-a7e2-1467fd2cfc06"
-  },
-  {
-    name: "Monica Bellucci",
-    pictureUrl: "https://image.tmdb.org/t/p/w500/qlT4904d8oi2NIs28RrgnIZDFZB.jpg",
-    popularity: 16.096436,
-    id: "0ad5e441-3084-47a1-9e9b-b917539bba71"
-  },
-  {
-    name: "Gal Gadot",
-    pictureUrl: "https://image.tmdb.org/t/p/w500/34kHAyBaBhq2kUrmhM15paEBuuI.jpg",
-    popularity: 10.049256,
-    id: "b497e3c4-50bb-4ae2-912f-eb36802c5bc2"
-  },
-  {
-    name: "Ian McKellen",
-    pictureUrl: "https://image.tmdb.org/t/p/w500/coWjgMEYJjk2OrNddlXCBm8EIr3.jpg",
-    popularity: 10.070132,
-    id: "0067ae32-97b6-4431-898e-eb1c10150abb"
+
+class App extends React.Component {
+  constructor(props) {
+    super(props); 
+
+    this.state = {
+      celebrities : json.slice(0,5)
+    }
   }
-];
 
-function App() {
+   //ITERATION 2
+  randomNumber = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  } ;
 
-  return (
-    <div className="App">
-      <table>
-          <thead>
-              <tr>
-                  <th>Picture</th>
-                  <th>Name</th>
-                  <th>Popularity</th>
-              </tr>
-          </thead>
-          <tbody>
-              {/* [ <tr>...</tr>, <tr>...</tr>, ....] */}
-              {celebrities.map(celebrity => {
-                return (
-                  <tr>
-                    <td><img src={celebrity.pictureUrl} /></td>
-                    <td>{celebrity.name}</td>
-                    <td>{Number.parseFloat(celebrity.popularity).toFixed(2)}</td>
+  addCelebHandler = (event) => {
+    // const celebCopy = this.state.celebrities.slice();
+    const celebCopy = [ ...this.state.celebrities ];
+
+    const randId = this.randomNumber(6, json.length); 
+    const newCeleb = json[randId]; // {}
+    celebCopy.push(newCeleb)
+
+    this.setState({
+      celebrities: celebCopy
+    });
+  }
+
+  //ITERATION 3
+  sortNameHandler = (event) => {
+    const celebCopy = [ ...this.state.celebrities ];
+
+    function compare( a, b ) {
+      if ( a.name < b.name ){
+        return -1;
+      }
+      if ( a.name > b.name ){
+        return 1;
+      }
+      return 0;
+    }
+    
+    celebCopy.sort( compare );
+
+    this.setState({
+      celebrities: celebCopy
+    });
+  }
+
+  sortPopHandler = (event) => {
+    const celebCopy = [ ...this.state.celebrities ];
+    function compare( a, b ) {
+      if ( a.popularity > b.popularity ){
+        return -1;
+      }
+      if ( a.popularity < b.popularity ){
+        return 1;
+      }
+      return 0;
+    }
+    
+    celebCopy.sort( compare );
+    this.setState({
+      celebrities: celebCopy
+    });
+  }
+
+  //ITERATION 4
+  removeCelebHandler = (id) => {
+    const celebCopy = [ ...this.state.celebrities ];
+    const celebIndex = celebCopy.findIndex((celebrity) => celebrity.id === id) ;
+    celebCopy.splice(celebIndex, 1)
+
+    this.setState({
+      celebrities: celebCopy
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>IronContacts</h1>
+        <button onClick={this.addCelebHandler}>Add Random Contact</button>
+        <button onClick={this.sortNameHandler}>Sort by Name</button>
+        <button onClick={this.sortPopHandler}>Sort by Popularity</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Picture</th>
+                    <th>Name</th>
+                    <th>Popularity</th>
+                    <th>Action</th>
                 </tr>
-                )
-              })}
-          </tbody>
-      </table>
-    </div>
-  );
+            </thead>
+            <tbody>
+                {/* [ <tr key="">...</tr>, <tr key="">...</tr>, ....] */}
+                {this.state.celebrities.map((celebrity) => {
+                  return (
+                    <tr key={celebrity.id} value={celebrity.id}>
+                      <td><img src={celebrity.pictureUrl} /></td>
+                      <td>{celebrity.name}</td>
+                      <td>{Number.parseFloat(celebrity.popularity).toFixed(2)}</td>
+                      <td><button onClick={() => this.removeCelebHandler(celebrity.id)}>Delete</button></td>
+                  </tr>
+                  )
+                })}
+            </tbody>
+        </table>
+      </div>
+    );
+  }
+  
 }
 
 export default App;
