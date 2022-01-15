@@ -33,6 +33,31 @@ class App extends Component {
 					>
 						Add Random Contact
 					</button>
+
+					<button
+						onClick={() => {
+							const alphabetSorted = this.state.contacts.sort(function (a, b) {
+								// a is greater than b by the ordering criterion
+								if (a.name > b.name) {
+									return 1;
+								}
+								//a is less than b by some ordering criterion
+								if (a.name < b.name) {
+									return -1;
+								}
+								return 0;
+							});
+							console.log(alphabetSorted);
+
+							this.setState({
+								contacts: this.state.contacts,
+							});
+						}}
+					>
+						Sort by name
+					</button>
+
+					<button>Sort by popularity</button>
 					<table>
 						<thead>
 							<tr>
@@ -49,7 +74,7 @@ class App extends Component {
 											<img src={el.pictureUrl} alt="actor" />
 										</td>
 										<td>{el.name}</td>
-										<td>{el.popularity}</td>
+										<td>{el.popularity.toPrecision(4)}</td>
 									</tr>
 								);
 							})}
