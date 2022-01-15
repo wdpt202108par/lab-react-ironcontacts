@@ -10,10 +10,8 @@ const actors = contacts.splice(0, 5);
 class App extends Component {
 	state = {
 		actors: actors,
-		contacts: contacts,
-		contactsEnd: contacts.slice(5, contacts.length), // [ {}, {}, {}, {}, {} ]
+		contacts: contacts, // [ {}, {}, {}, {}, {} ]
 	};
-
 	render() {
 		return (
 			<div className="App">
@@ -21,19 +19,16 @@ class App extends Component {
 					<h1>Iron Contact</h1>
 					<button
 						onClick={() => {
-							console.log("coucou");
-							// 1. tirer au sort un acteur de la liste json
-							const random = Math.floor(
-								Math.random() * this.state.contacts.length
+							this.state.actors.push(
+								contacts[
+									Math.floor(Math.random(this.contacts) * contacts.length)
+								]
 							);
-							console.log(random);
-							// 2. faire une copie de this.state.actor
-							const contactsCopy = [...this.state.contacts];
-							console.log("copy:", contactsCopy);
-							// 3. sur cette copie on va .push 1.
-							let contactsEnd = Math.floor(Math.random()[1]);
-							contactsCopy.push(contactsEnd);
-							//	console.log("push:", );
+							console.log(this.state.actors);
+							//augmenter +1 (add 1 actor )
+							this.setState({
+								contacts: this.state.contacts,
+							});
 						}}
 					>
 						Add Random Contact
