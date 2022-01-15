@@ -15,30 +15,13 @@ function App() {
 
 class ContactList extends React.Component {
   state = {
-    contacts: contacts.slice(0, 5)
+    contacts: contacts.slice(0, 5),
+    sortBy: null
   }
 
   addRand = () => {
     let randIdx = Math.floor(Math.random() * contacts.length);
     let contactsCopy = [...this.state.contacts, contacts[randIdx]];
-
-    this.setState({
-      contacts: contactsCopy
-    })
-  }
-
-  sortByName = () => {
-    let contactsCopy = [...this.state.contacts];
-    contactsCopy.sort((a, b) => a.name.localeCompare(b.name))
-
-    this.setState({
-      contacts: contactsCopy
-    })
-  }
-
-  sortByPop = () => {
-    let contactsCopy = [...this.state.contacts];
-    contactsCopy.sort((a, b) => b.popularity - a.popularity)
 
     this.setState({
       contacts: contactsCopy
@@ -56,11 +39,17 @@ class ContactList extends React.Component {
   }
 
   render() {
+    const contactsCopy =  [...this.state.contacts]
+
+    const compareFn = this.state.sortBy === 'name' ? (a, b) => a.name.localeCompare(b.name) : this.state.sortBy === "popularity" ? (a, b) => b.popularity - a.popularity : (a, b) => b.popularity === a.popularity;
+
+    const sortedContacts = contactsCopy.sort(compareFn)
+
     return (
       <div>
         <button onClick={this.addRand}>Add Random Contact</button>
-        <button onClick={this.sortByName}>Sort by name</button>
-        <button onClick={this.sortByPop}>Sort by popularity</button>
+        <button onClick={() => { this.state.sortBy ? this.setState({ sortBy: null }) : this.setState({ sortBy: "name" }) }}>Sort by name</button>
+        <button onClick={() => { this.state.sortBy ? this.setState({ sortBy: null }) : this.setState({ sortBy: "popularity" }) }}>Sort by popularity</button>
         <table>
           <thead>
             <tr>
@@ -71,7 +60,7 @@ class ContactList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.contacts.map(el => {
+            {sortedContacts.map(el => {
               return (
                 <tr key={el.id} >
                   <td><img src={el.pictureUrl} alt={el.name} /></td>
