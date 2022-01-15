@@ -2,8 +2,6 @@ import contacts from "./contacts.json";
 import './App.css';
 import React from "react";
 
-let contactList = contacts.slice(0, 5);
-
 function App() {
   return (
     <div className="App">
@@ -22,10 +20,28 @@ class ContactList extends React.Component {
 
   addRand = () => {
     let randIdx = Math.floor(Math.random() * contacts.length);
-    let contactsCopy = this.state.contacts.push(contacts[randIdx]);
+    let contactsCopy = [...this.state.contacts, contacts[randIdx]];
 
     this.setState({
-      contacts: Array.from(contactsCopy)
+      contacts: contactsCopy
+    })
+  }
+
+  sortByName = () => {
+    let contactsCopy = [...this.state.contacts];
+    contactsCopy.sort((a, b) => a.name.localeCompare(b.name))
+
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
+  sortByPop = () => {
+    let contactsCopy = [...this.state.contacts];
+    contactsCopy.sort((a, b) => b.popularity - a.popularity)
+
+    this.setState({
+      contacts: contactsCopy
     })
   }
 
@@ -33,6 +49,8 @@ class ContactList extends React.Component {
     return (
       <div>
         <button onClick={this.addRand}>Add Random Contact</button>
+        <button onClick={this.sortByName}>Sort by name</button>
+        <button onClick={this.sortByPop}>Sort by popularity</button>
         <table>
           <thead>
             <tr>
