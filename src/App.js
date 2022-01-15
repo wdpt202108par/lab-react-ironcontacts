@@ -45,6 +45,16 @@ class ContactList extends React.Component {
     })
   }
 
+  delete = (contactId) => {
+    let contactsCopy = [...this.state.contacts];
+    let contactIndex = contactsCopy.findIndex(el => el.id === contactId);
+    contactsCopy.splice(contactIndex, 1);
+
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
   render() {
     return (
       <div>
@@ -57,6 +67,7 @@ class ContactList extends React.Component {
               <th>Picture</th>
               <th>Name</th>
               <th>Popularity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -66,6 +77,7 @@ class ContactList extends React.Component {
                   <td><img src={el.pictureUrl} alt={el.name} /></td>
                   <td>{el.name}</td>
                   <td>{el.popularity.toFixed(2)}</td>
+                  <td><button onClick={() => this.delete(el.id)}>Delete</button></td>
                 </tr>
               );
             })}
