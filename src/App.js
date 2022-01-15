@@ -8,6 +8,10 @@ const Contact = (props) => {
       <td><img className="contactPicture" src={props.pictureUrl} alt={props.name}/></td>
       <td>{props.name}</td>
       <td>{Math.round((props.popularity)*100)/100}</td>
+      <td>
+      <button onClick={props.clickMe}>Delete</button>
+      </td>
+      
     </>
   );
 };
@@ -53,6 +57,17 @@ class ContactsTab extends React.Component {
     })
   }
 
+  deleteContacts = (id) => {
+    const contactCopy = this.state.contacts.slice();
+    const index = contactCopy.findIndex((el) => el.id === id);
+    contactCopy.splice(index, 1); //
+
+    this.setState({
+      contacts: contactCopy
+    });
+  };
+
+
 
   render () {
     return (
@@ -62,6 +77,7 @@ class ContactsTab extends React.Component {
         <button onClick={this.sortByName}>Sort By Name</button>
         <button onClick={this.sortByPopularity}>Sort By Popularity</button>
         
+        
         {/* Iteration 1 : The Contact table */}
         <table>
           <thead>
@@ -69,6 +85,7 @@ class ContactsTab extends React.Component {
               <th colSpan="1">Picture</th>
               <th colSpan="1">Name</th>
               <th colSpan="1">Popularity</th>
+              <th colSpan="1">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -77,6 +94,7 @@ class ContactsTab extends React.Component {
                 <Contact name={contact.name} 
                   pictureUrl={contact.pictureUrl} 
                   popularity={contact.popularity} 
+                  clickMe = {()=>this.deleteContacts(contact.id)}
                 />
               </tr>                      
             ))}
