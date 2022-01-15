@@ -5,7 +5,7 @@ import contacts from "./contacts.json";
 const Contact = (props) => {
   return (
     <>
-      <td><img className="contactPicture" src={props.pictureUrl} alt={props.name}image/></td>
+      <td><img className="contactPicture" src={props.pictureUrl} alt={props.name}/></td>
       <td>{props.name}</td>
       <td>{Math.round((props.popularity)*100)/100}</td>
     </>
