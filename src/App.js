@@ -17,11 +17,36 @@ class Random extends React.Component {
     })
   }
 
+  sortAlph = () => {
+    let contactsCopy = [...this.state.contacts];
+    contactsCopy.sort((firstEl, secondEl) => {
+        return firstEl.name.localeCompare(secondEl.name)
+    })
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
+  sortPopularity = () => {
+    let contactsCopy = [...this.state.contacts];
+    contactsCopy.sort((firstEl, secondEl) => {
+      if ((firstEl.popularity - secondEl.popularity) < 0) return 1;
+      if ((firstEl.popularity - secondEl.popularity) > 0)return -1;
+      if ((firstEl.popularity - secondEl.popularity) === 0) return 0;
+      return null;
+    })
+    this.setState({
+      contacts: contactsCopy
+    })
+  }
+
   render() {
     return (
       <div className="App">
       <h1>IronContacts</h1>
       <button onClick={this.addNewRandom}>Add Random Contact</button>
+      <button onClick={this.sortAlph}>sort by alphabetical order</button>
+      <button onClick={this.sortPopularity}>sort Popularity</button>
         <table>
           <thead>
             <tr>
