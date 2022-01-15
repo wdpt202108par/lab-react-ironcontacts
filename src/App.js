@@ -10,7 +10,12 @@ class Random extends React.Component {
   }
 
   addNewRandom = (event) => {
+    let contactsCopy = [...this.state.contacts]
     const random = contacts[Math.floor(Math.random() * contacts.length)];
+    if (contactsCopy.findIndex(el => el.id === random.id) !== -1) {
+      console.log(random)
+      return this.addNewRandom()
+    }
     this.setState ({
       contacts : [...this.state.contacts, {...random}]
     })
