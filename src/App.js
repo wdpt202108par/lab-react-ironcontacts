@@ -57,7 +57,28 @@ class App extends Component {
 						Sort by name
 					</button>
 
-					<button>Sort by popularity</button>
+					<button
+						onClick={() => {
+							const popularitySorted = this.state.contacts.sort(function (
+								a,
+								b
+							) {
+								if (a.popularity < b.popularity) {
+									return 1;
+								}
+								if (a.popularity > b.popularity) {
+									return -1;
+								}
+								return 0;
+							});
+							console.log("popularity sorted:", popularitySorted);
+							this.setState({
+								contacts: this.state.contacts,
+							});
+						}}
+					>
+						Sort by popularity
+					</button>
 					<table>
 						<thead>
 							<tr>
@@ -74,7 +95,7 @@ class App extends Component {
 											<img src={el.pictureUrl} alt="actor" />
 										</td>
 										<td>{el.name}</td>
-										<td>{el.popularity.toPrecision(4)}</td>
+										<td>{el.popularity.toFixed(2)}</td>
 									</tr>
 								);
 							})}
