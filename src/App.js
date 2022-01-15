@@ -1,9 +1,8 @@
-import logo from './logo.svg';
+
 import { Component } from 'react';
 import './App.css';
 import contacts from "./contacts.json";
 
-const numbers = [1, 2, 3, 4, 5];
  
 // array of list item HTML elements that needs to be displayed
 export const listItems = [<li>1</li>, <li>2</li>, <li>3</li>, <li>4</li>, <li>5</li>];
@@ -24,6 +23,7 @@ class Actor extends Component{
       <>
         <table>
           <tr>
+            <th>picture</th>
             <th>Name</th>
             <th>Popularity</th>
           </tr>
@@ -31,6 +31,7 @@ class Actor extends Component{
             this.state.actors.map(el => { return (
             
               <tr>
+                <td><img src={el.pictureUrl} alt="actor" /></td>
                 <td>{el.name}</td>
                 <td>{el.popularity}</td>
               </tr> )
@@ -46,6 +47,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+
+         <h1>Iron Contacts</h1>
         <Actor />
 
       </header>
